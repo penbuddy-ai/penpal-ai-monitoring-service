@@ -11,8 +11,16 @@ describe("Monitoring MetricsController", () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MetricsController, MetricsApiController],
       providers: [
-        { provide: PrometheusService, useValue: { getMetrics: jest.fn().mockResolvedValue("ok") } },
-        { provide: MetricsService, useValue: { getMetricsSummary: jest.fn().mockResolvedValue({ ok: true }) } },
+        {
+          provide: PrometheusService,
+          useValue: { getMetrics: jest.fn().mockResolvedValue("ok") },
+        },
+        {
+          provide: MetricsService,
+          useValue: {
+            getMetricsSummary: jest.fn().mockResolvedValue({ ok: true }),
+          },
+        },
       ],
     }).compile();
 
@@ -34,5 +42,3 @@ describe("Monitoring MetricsController", () => {
     expect(res).toHaveProperty("ok", true);
   });
 });
-
-
