@@ -54,14 +54,29 @@ let MetricsService = MetricsService_1 = class MetricsService {
         }
     }
     async collectUserMetrics() {
-        var _a;
         try {
             const authServiceUrl = this.configService.get("AUTH_SERVICE_URL", "http://auth-service:3002");
-            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(`${authServiceUrl}/api/v1/metrics/users`, {
+            const response = await (0, rxjs_1.firstValueFrom)(this.httpService.get(`${authServiceUrl}/api/v1/users/metrics`, {
                 timeout: 5000,
             }));
-            if ((_a = response.data) === null || _a === void 0 ? void 0 : _a.activeUsers) {
-                this.prometheusService.setActiveUsers(response.data.activeUsers);
+            if (response.data) {
+                const { activeUsers, totalUsers, usersByLanguage, averageUserLevel } = response.data;
+                if (activeUsers !== undefined) {
+                    this.prometheusService.setActiveUsers(activeUsers);
+                }
+                if (totalUsers !== undefined) {
+                    this.prometheusService.setTotalUsers(totalUsers);
+                }
+                if (usersByLanguage) {
+                    for (const language in usersByLanguage) {
+                        this.prometheusService.setUsersByLanguage(language, usersByLanguage[language]);
+                    }
+                }
+                if (averageUserLevel) {
+                    for (const language in averageUserLevel) {
+                        this.prometheusService.setAverageUserLevel(language, averageUserLevel[language]);
+                    }
+                }
             }
         }
         catch (error) {

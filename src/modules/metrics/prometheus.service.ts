@@ -14,6 +14,9 @@ export class PrometheusService implements OnModuleInit {
   private readonly serviceHealthStatus: Gauge<string>;
   private readonly serviceResponseTime: Gauge<string>;
   private readonly activeUsers: Gauge<string>;
+  private readonly totalUsers: Gauge<string>;
+  private readonly usersByLanguage: Gauge<string>;
+  private readonly averageUserLevel: Gauge<string>;
   private readonly conversationsTotal: Counter<string>;
   private readonly paymentsTotal: Counter<string>;
   private readonly tokensConsumed: Counter<string>;
@@ -60,6 +63,26 @@ export class PrometheusService implements OnModuleInit {
     this.activeUsers = new Gauge({
       name: "penpal_active_users_total",
       help: "Number of active users in the system",
+      registers: [register],
+    });
+
+    this.totalUsers = new Gauge({
+      name: "penpal_total_users",
+      help: "Total number of registered users",
+      registers: [register],
+    });
+
+    this.usersByLanguage = new Gauge({
+      name: "penpal_users_by_language",
+      help: "Number of users studying each language",
+      labelNames: ["language"],
+      registers: [register],
+    });
+
+    this.averageUserLevel = new Gauge({
+      name: "penpal_average_user_level",
+      help: "Average user level across all users",
+      labelNames: ["language"],
       registers: [register],
     });
 
@@ -136,6 +159,18 @@ export class PrometheusService implements OnModuleInit {
   // Business Metrics
   setActiveUsers(count: number) {
     this.activeUsers.set(count);
+  }
+
+  setTotalUsers(count: number) {
+    this.totalUsers.set(count);
+  }
+
+  setUsersByLanguage(language: string, count: number) {
+    this.usersByLanguage.set({ language }, count);
+  }
+
+  setAverageUserLevel(language: string, averageLevel: number) {
+    this.averageUserLevel.set({ language }, averageLevel);
   }
 
   incrementConversations(status: "created" | "completed" | "failed") {
