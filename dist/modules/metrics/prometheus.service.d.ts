@@ -5,6 +5,9 @@ export declare class PrometheusService implements OnModuleInit {
     private readonly serviceHealthStatus;
     private readonly serviceResponseTime;
     private readonly activeUsers;
+    private readonly totalUsers;
+    private readonly usersByLanguage;
+    private readonly averageUserLevel;
     private readonly conversationsTotal;
     private readonly paymentsTotal;
     private readonly tokensConsumed;
@@ -15,6 +18,9 @@ export declare class PrometheusService implements OnModuleInit {
     setServiceHealth(serviceName: string, serviceUrl: string, isHealthy: boolean): void;
     setServiceResponseTime(serviceName: string, responseTime: number): void;
     setActiveUsers(count: number): void;
+    setTotalUsers(count: number): void;
+    setUsersByLanguage(language: string, count: number): void;
+    setAverageUserLevel(language: string, averageLevel: number): void;
     incrementConversations(status: "created" | "completed" | "failed"): void;
     incrementPayments(status: "success" | "failed" | "pending", amount?: number): void;
     incrementTokensConsumed(provider: string, model: string, tokens: number): void;

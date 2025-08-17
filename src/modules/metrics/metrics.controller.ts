@@ -11,7 +11,7 @@ export class MetricsController {
     private readonly prometheusService: PrometheusService
   ) {}
 
-  // Endpoint metrics sans préfixe API pour Prometheus
+  // Endpoint metrics avec préfixe API pour Prometheus
   @Get("metrics")
   @Header("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
   @ApiOperation({ summary: "Get Prometheus metrics" })

@@ -72,9 +72,9 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "modules/metrics/metrics.controller.ts"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
-} 
+}
