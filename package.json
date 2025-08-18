@@ -1,6 +1,6 @@
 {
   "name": "penpal-ai-monitoring-service",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Service de monitoring et métriques pour l'écosystème Penpal AI",
   "author": "Penpal AI Team",
   "private": true,
