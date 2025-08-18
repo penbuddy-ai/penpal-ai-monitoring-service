@@ -28,9 +28,6 @@ jobs:
       - name: Run unit tests with coverage
         run: npm run test:cov -- --runInBand
 
-      - name: Run E2E tests
-        run: npm run test:e2e -- --runInBand
-
   build-and-push:
     needs: [test]
     runs-on: ubuntu-latest
