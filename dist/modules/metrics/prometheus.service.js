@@ -46,6 +46,23 @@ let PrometheusService = class PrometheusService {
             help: "Number of active users in the system",
             registers: [prom_client_1.register],
         });
+        this.totalUsers = new prom_client_1.Gauge({
+            name: "penpal_total_users",
+            help: "Total number of registered users",
+            registers: [prom_client_1.register],
+        });
+        this.usersByLanguage = new prom_client_1.Gauge({
+            name: "penpal_users_by_language",
+            help: "Number of users studying each language",
+            labelNames: ["language"],
+            registers: [prom_client_1.register],
+        });
+        this.averageUserLevel = new prom_client_1.Gauge({
+            name: "penpal_average_user_level",
+            help: "Average user level across all users",
+            labelNames: ["language"],
+            registers: [prom_client_1.register],
+        });
         this.conversationsTotal = new prom_client_1.Counter({
             name: "penpal_conversations_total",
             help: "Total number of conversations created",
@@ -87,6 +104,15 @@ let PrometheusService = class PrometheusService {
     }
     setActiveUsers(count) {
         this.activeUsers.set(count);
+    }
+    setTotalUsers(count) {
+        this.totalUsers.set(count);
+    }
+    setUsersByLanguage(language, count) {
+        this.usersByLanguage.set({ language }, count);
+    }
+    setAverageUserLevel(language, averageLevel) {
+        this.averageUserLevel.set({ language }, averageLevel);
     }
     incrementConversations(status) {
         this.conversationsTotal.inc({ status });

@@ -71,13 +71,41 @@ export class MetricsService {
         "http://auth-service:3002"
       );
       const response = await firstValueFrom(
-        this.httpService.get(`${authServiceUrl}/api/v1/metrics/users`, {
+        this.httpService.get(`${authServiceUrl}/api/v1/users/metrics`, {
           timeout: 5000,
         })
       );
 
-      if (response.data?.activeUsers) {
-        this.prometheusService.setActiveUsers(response.data.activeUsers);
+      if (response.data) {
+        const { activeUsers, totalUsers, usersByLanguage, averageUserLevel } =
+          response.data;
+
+        if (activeUsers !== undefined) {
+          this.prometheusService.setActiveUsers(activeUsers);
+        }
+
+        if (totalUsers !== undefined) {
+          this.prometheusService.setTotalUsers(totalUsers);
+        }
+
+        if (usersByLanguage) {
+          // Clear previous language metrics
+          for (const language in usersByLanguage) {
+            this.prometheusService.setUsersByLanguage(
+              language,
+              usersByLanguage[language]
+            );
+          }
+        }
+
+        if (averageUserLevel) {
+          for (const language in averageUserLevel) {
+            this.prometheusService.setAverageUserLevel(
+              language,
+              averageUserLevel[language]
+            );
+          }
+        }
       }
     } catch (error) {
       this.logger.debug("Could not collect user metrics:", error.message);

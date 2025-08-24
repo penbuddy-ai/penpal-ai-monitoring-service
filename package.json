@@ -1,6 +1,6 @@
 {
   "name": "penpal-ai-monitoring-service",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Service de monitoring et métriques pour l'écosystème Penpal AI",
   "author": "Penpal AI Team",
   "private": true,
@@ -17,7 +17,10 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "release:patch": "npm version patch && git push origin $(git describe --tags --abbrev=0)",
+    "release:minor": "npm version minor && git push origin $(git describe --tags --abbrev=0)",
+    "release:major": "npm version major && git push origin $(git describe --tags --abbrev=0)"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -72,9 +75,20 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!**/*.spec.ts",
+      "!**/*.e2e-spec.ts",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/coverage/**",
+      "!main.ts",
+      "!**/*.d.ts",
+      "!**/*.interface.ts"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
-} 
+}
